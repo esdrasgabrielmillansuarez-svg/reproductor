@@ -1,0 +1,76 @@
+/* Inspired by modern, colorful audio player UIs. Adds gradients, depth and interactive button states. */
+:root{
+  --bg1:#0f1720; --bg2:#071023; --card:#0e2233; --accent1:#ff6b6b; --accent2:#6b8bff; --accent3:#7afcff; --muted:#9aa5b1; --text:#e6eef6;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,var(--bg2),var(--bg1));color:var(--text);height:100vh;display:flex;flex-direction:column}
+.app-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px}
+.app-header h1{margin:0;font-size:18px;letter-spacing:0.4px}
+.header-actions input{display:none}
+.header-actions button{background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));border:none;color:var(--text);padding:8px 12px;border-radius:12px;cursor:pointer;margin-left:8px;box-shadow:0 6px 18px rgba(2,6,23,0.6);transition:transform .15s ease, box-shadow .15s ease}
+.header-actions button:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(2,6,23,0.7)}
+.header-actions button:active{transform:translateY(-1px) scale(0.995)}
+
+.app-main{display:flex;flex:1;gap:20px;padding:20px}
+.playlist{width:280px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:14px;padding:14px;display:flex;flex-direction:column;box-shadow:inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(2,6,23,0.6)}
+.playlist h3{margin:0 0 10px 0;color:var(--muted);font-size:13px}
+#playlist{list-style:none;padding:0;margin:0;overflow:auto;flex:1}
+#playlist li{padding:10px;border-radius:10px;margin-bottom:8px;cursor:pointer;color:var(--text);display:flex;justify-content:space-between;align-items:center;background:transparent;transition:background .12s ease, transform .12s ease}
+#playlist li:hover{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));transform:translateY(-3px)}
+#playlist li.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#061226;border-radius:12px;box-shadow:0 6px 18px rgba(98,90,255,0.12)}
+.drop-hint{font-size:12px;color:var(--muted);padding-top:8px;text-align:center}
+
+.player{flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:14px}
+.now-playing{display:flex;gap:14px;align-items:center;padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));border-radius:14px}
+.track-name{font-weight:700;font-size:16px}
+.cover{position:relative;width:112px;height:112px}
+.cover img{width:112px;height:112px;border-radius:14px;object-fit:cover;background:linear-gradient(90deg,var(--accent1),var(--accent2));border:2px solid rgba(255,255,255,0.03);box-shadow:0 10px 30px rgba(2,6,23,0.6);position:absolute;inset:0;opacity:0;transition:opacity .45s ease}
+.cover .placeholder{position:absolute;inset:0;border-radius:14px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.06);background:linear-gradient(90deg,var(--accent2),var(--accent3));overflow:hidden;transition:opacity .45s ease}
+.cover .placeholder .waveform{width:100%;height:100%;position:relative}
+.cover .placeholder::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 4px, transparent 4px 8px);mix-blend-mode:overlay;animation:wave 2s linear infinite}
+.cover.has-cover img{opacity:1}
+.cover.has-cover .placeholder{opacity:0}
+@keyframes wave{from{transform:translateX(0)}to{transform:translateX(-20px)}}
+
+/* icon sizing */
+.icon{width:18px;height:18px;display:inline-block;fill:currentColor}
+.left-controls .icon{width:22px;height:22px}
+#playPause .icon{width:26px;height:26px}
+.controls{display:flex;justify-content:space-between;align-items:center}
+.left-controls{display:flex;align-items:center}
+.left-controls button{background:linear-gradient(180deg,#0b1422,#12263a);border:none;color:var(--text);padding:14px;border-radius:12px;margin-right:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:16px;width:54px;height:54px;box-shadow:0 10px 24px rgba(2,6,23,0.6);transition:transform .12s ease, box-shadow .12s ease, background .12s ease}
+.left-controls button:hover{transform:translateY(-6px);box-shadow:0 16px 34px rgba(2,6,23,0.7)}
+.left-controls button:active{transform:translateY(-2px) scale(.995)}
+
+/* prominent circular play button */
+#playPause{width:78px;height:78px;border-radius:22px;font-size:20px;padding:0;background:linear-gradient(180deg,var(--accent1),var(--accent2));color:#05162a;box-shadow:0 18px 40px rgba(98,90,255,0.18);}
+#playPause.playing{animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 18px 40px rgba(98,90,255,0.18)}50%{box-shadow:0 24px 60px rgba(98,90,255,0.28)}100%{box-shadow:0 18px 40px rgba(98,90,255,0.18)}}
+
+.right-controls{display:flex;align-items:center}
+.volume input{vertical-align:middle}
+
+.progress-row{display:flex;align-items:center;gap:12px}
+#seek{flex:1;appearance:none;height:8px;border-radius:8px;background:linear-gradient(90deg,var(--accent1),var(--accent2));outline:none}
+#seek::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid rgba(255,255,255,0.15);box-shadow:0 6px 14px rgba(2,6,23,0.6)}
+#currentTime,#duration{width:52px;text-align:center;color:var(--muted);font-size:13px}
+
+.suggestions{margin-top:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));padding:10px;border-radius:12px}
+.suggestions h4{margin:0 0 8px 0;color:var(--muted)}
+.suggest-controls{display:flex;gap:8px;margin-bottom:8px}
+.suggestions ul{list-style:none;padding:0;margin:0;max-height:180px;overflow:auto}
+.suggestions li{padding:8px;border-radius:8px;margin-bottom:8px;background:transparent;display:flex;justify-content:space-between;align-items:center;transition:transform .12s ease, background .12s ease}
+.suggestions li:hover{transform:translateX(6px);background:rgba(255,255,255,0.02)}
+.suggestions li button{background:linear-gradient(90deg,var(--accent3),var(--accent2));border:none;color:#031628;padding:6px 8px;border-radius:8px;cursor:pointer}
+.suggestion-item{display:flex;gap:10px;align-items:center}
+.suggestion-item img{width:48px;height:48px;border-radius:6px;object-fit:cover;border:1px solid rgba(255,255,255,0.03)}
+.suggestion-thumb{width:48px;height:48px;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent2),var(--accent3));}
+.thumb-spinner{width:28px;height:28px;border-radius:50%;border:3px solid rgba(255,255,255,0.12);border-top-color:rgba(255,255,255,0.5);animation:spin 1s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.suggestion-meta{display:flex;flex-direction:column}
+.suggestion-title{font-size:13px;font-weight:600}
+.suggestion-sub{font-size:12px;color:var(--muted)}
+
+/* small responsive tweaks */
+.app-footer{font-size:12px;color:var(--muted);padding:10px 18px;border-top:1px solid rgba(255,255,255,0.02)}
+@media(max-width:800px){.app-main{flex-direction:column}.playlist{width:100%;order:2}.player{order:1}}

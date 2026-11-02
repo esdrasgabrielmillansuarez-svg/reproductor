@@ -1,0 +1,13 @@
+{
+  "name": "reproductor-electron",
+  "version": "0.1.0",
+  "description": "Reproductor de audio simple con Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {},
+  "keywords": ["audio","electron","reproductor"],
+  "author": "",
+  "license": "MIT"
+}

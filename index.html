@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reproductor de audio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Reproductor de audio</h1>
+    <div class="header-actions">
+      <input id="fileInput" type="file" accept="audio/*" multiple>
+      <button id="openFolder" title="Agregar archivos"><svg class="icon"><use href="#icon-add"></use></svg> Agregar</button>
+      <button id="savePlaylist" title="Guardar lista"><svg class="icon"><use href="#icon-save"></use></svg> Guardar</button>
+      <button id="loadPlaylist" title="Cargar lista"><svg class="icon"><use href="#icon-load"></use></svg> Cargar</button>
+    </div>
+  </header>
+
+  <!-- SVG sprite for icons -->
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="icon-play" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></symbol>
+    <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></symbol>
+    <symbol id="icon-next" viewBox="0 0 24 24"><path d="M6 6v12l8.5-6L6 6zm9 0h3v12h-3z"/></symbol>
+    <symbol id="icon-prev" viewBox="0 0 24 24"><path d="M18 6V18L9.5 12 18 6zM6 6h3v12H6z"/></symbol>
+    <symbol id="icon-stop" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></symbol>
+    <symbol id="icon-save" viewBox="0 0 24 24"><path d="M17 3H5c-1.1 0-2 .9-2 2v14l4-2 4 2 4-2 4 2V7c0-1.1-.9-2-2-2zM12 19l-4-2V5h8v12l-4 2z"/></symbol>
+    <symbol id="icon-load" viewBox="0 0 24 24"><path d="M12 2v10l4-4h-3V2h-2zM4 20h16v2H4z"/></symbol>
+    <symbol id="icon-add" viewBox="0 0 24 24"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"/></symbol>
+  </svg>
+
+  <main class="app-main">
+    <aside class="playlist">
+      <h3>Lista de reproducción</h3>
+      <ul id="playlist"></ul>
+      <div class="drop-hint">Arrastra archivos aquí</div>
+    </aside>
+
+    <section class="player">
+      <div class="now-playing">
+        <div class="cover">
+          <div class="placeholder">
+            <div class="waveform"></div>
+          </div>
+          <img id="coverArt" src="" alt="Carátula" />
+        </div>
+        <div id="fileName" class="track-name">Ninguna pista seleccionada</div>
+      </div>
+
+      <audio id="audio" preload="metadata"></audio>
+
+      <div class="controls">
+        <div class="left-controls">
+          <button id="prev" title="Anterior"><svg class="icon"><use href="#icon-prev"></use></svg></button>
+          <button id="playPause" title="Reproducir/Pausa"><svg class="icon"><use href="#icon-play"></use></svg></button>
+          <button id="next" title="Siguiente"><svg class="icon"><use href="#icon-next"></use></svg></button>
+          <button id="stop" title="Detener"><svg class="icon"><use href="#icon-stop"></use></svg></button>
+        </div>
+
+        <div class="right-controls">
+          <label class="volume"><svg class="icon" style="width:18px;height:18px"><use href="#icon-play"></use></svg><input id="volume" type="range" min="0" max="1" step="0.01" value="1"></label>
+        </div>
+      </div>
+
+      <div class="progress-row">
+        <span id="currentTime">00:00</span>
+        <input id="seek" type="range" min="0" max="0" value="0">
+        <span id="duration">00:00</span>
+      </div>
+
+      <section class="suggestions">
+        <h4>Sugerencias</h4>
+        <div class="suggest-controls">
+          <button id="autoplaySuggest">Autoplay sugerencias</button>
+          <button id="webSuggestToggle" title="Buscar sugerencias en la web">Buscar web</button>
+          <button id="youtubeSuggestToggle" title="Buscar en YouTube">YouTube</button>
+        </div>
+        <ul id="suggestions"></ul>
+      </section>
+
+    </section>
+  </main>
+
+  <footer class="app-footer">Consejo: usa la barra espaciadora para reproducir/pausar y arrastra pistas a la lista.</footer>
+
+  <!-- jsmediatags for reading ID3 metadata and cover art from audio files -->
+  <script src="https://unpkg.com/jsmediatags@3.9.5/dist/jsmediatags.min.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>
